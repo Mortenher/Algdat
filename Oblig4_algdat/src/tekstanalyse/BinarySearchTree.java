@@ -3,51 +3,61 @@ package tekstanalyse;
 public class BinarySearchTree {
 	Node root;
 	
-	public void addNode(int key, String name){
-		Node newNode = new Node(key, name);
+	public BinarySearchTree(){}
+
+	public void addNode(String value){
 		
 		if(root == null){
-			root = newNode;
+			root = new Node(value);
 		}
 		else{
 			Node focusNode = root;
 			
-			Node parent;
-			
 			while(true){
-				parent = focusNode;
+				int checknode = value.compareTo(focusNode.data);
 				
-				if(key < focusNode.key){
-					focusNode = focusNode.leftChild;
-					
-					if(focusNode == null){
-						parent.leftChild = newNode;
+				if(checknode < 0){
+					if(focusNode.leftChild == null){
+						focusNode.leftChild = new Node(value);
 						return;
 					}
+					focusNode = focusNode.leftChild;
+				}
+				else if(checknode == 0){
+					focusNode.key ++;
+					return;
 				}
 				else{
-					focusNode = focusNode.rightChild;
-					
-					if(focusNode == null){
-						parent.rightChild = newNode;
+					if(focusNode.rightChild == null){
+						focusNode.rightChild = new Node(value);
 						return;
 					}
+					focusNode = focusNode.rightChild;
 				}
 			}
 		}
-		
 	}
 	
-	public void inOrderTraverse(Node focusnode){
-		if(focusnode != null){
-			inOrderTraverse(focusnode.leftChild);
-			
-			System.out.println(focusnode);
-			
-			inOrderTraverse(focusnode.rightChild);
+	public void printTree(){
+		if(root == null){
+			System.out.println("treet er tomt");
 		}
-	}
-	
+		else{
+			printRecursive(root);
+		}
+	}   
+	   
+	public void printRecursive(Node n){
+		if(n.leftChild != null){
+			printRecursive(n.leftChild);
+		}
+		System.out.println(n.data + ": " + n.key);
+		if(n.rightChild != null){
+			printRecursive(n.rightChild);
+		}
+			
+	} 
+	   
 	public Node findNode(int key){
 		Node focusNode = root;
 		
@@ -69,18 +79,14 @@ public class BinarySearchTree {
 	
 	class Node {
 		
+	   String data;
 	   int key;
-	   String name;
 	   Node leftChild;
 	   Node rightChild;
 		
-	   Node(int key, String name) {
-	       this.key = key;
-	       this.name = name;
+	  public Node(String value) {
+	       data = value;
+	       key = 1;
 	   }
-	   
-	   public String toString(){
-			return name + " with key " + key;
-		}
 	}  
 }
